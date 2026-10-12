@@ -1,0 +1,104 @@
+//slip 1 Q1
+
+#include <stdio.h>
+
+int binarySearch(int arr[], int n, int key) {
+    int low = 0, high = n - 1;
+    while (low <= high) {
+        int mid = (low + high) / 2;
+        if (arr[mid] == key)
+            return mid;
+        else if (arr[mid] < key)
+            low = mid + 1;
+        else
+            high = mid - 1;
+    }
+    return -1;
+}
+
+int main() {
+    int arr[100], n, key, i, result;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    printf("Enter %d sorted elements:\n", n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+    result = binarySearch(arr, n, key);
+    if (result == -1)
+        printf("Element not found\n");
+    else
+        printf("Element found at index %d\n", result);
+    return 0;
+}
+
+//q2.1
+
+#include <stdio.h>
+#include <stdbool.h>
+
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+bool empty() {
+    return top == -1;
+}
+
+void push(int value) {
+    if (top >= MAX - 1) {
+        printf("Overflow\n");
+    } else {
+        stack[++top] = value;
+        printf("%d pushed\n", value);
+    }
+}
+
+int pop() {
+    if (empty()) {
+        printf("Underflow\n");
+        return -1;
+    } else {
+        int val = stack[top--];
+        printf("%d popped\n", val);
+        return val;
+    }
+}
+
+void display() {
+    if (empty()) {
+        printf("Empty\n");
+    } else {
+        for (int i = top; i >= 0; i--) {
+            printf("%d ", stack[i]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int choice, value;
+    while (1) {
+        printf("1.Push 2.Pop 3.Empty 4.Display 5.Exit\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                scanf("%d", &value);
+                push(value);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                printf(empty() ? "Yes\n" : "No\n");
+                break;
+            case 4:
+                display();
+                break;
+            case 5:
+                return 0;
+        }
+    }
+}

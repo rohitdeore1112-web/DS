@@ -1,0 +1,73 @@
+//slip 6
+
+#include <stdio.h>
+#include <string.h>
+#define MAX 100
+
+int top = -1;
+char stack[MAX];
+
+void push(char ch) {
+    if (top < MAX - 1)
+        stack[++top] = ch;
+}
+
+char pop() {
+    if (top >= 0)
+        return stack[top--];
+    return '\0';
+}
+
+int main() {
+    char str[MAX], reversed[MAX];
+    int i;
+    printf("Enter a string: ");
+    gets(str);
+    for (i = 0; i < strlen(str); i++)
+        push(str[i]);
+    for (i = 0; i < strlen(str); i++)
+        reversed[i] = pop();
+    reversed[i] = '\0';
+    printf("Reversed string: %s\n", reversed);
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+typedef struct {
+    int empno;
+    char empname[100];
+} Employee;
+
+void bubbleSort(Employee e[], int n) {
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (strcmp(e[j].empname, e[j + 1].empname) > 0) {
+                Employee temp = e[j];
+                e[j] = e[j + 1];
+                e[j + 1] = temp;
+            }
+}
+
+int main() {
+    FILE* fp = fopen("employee.txt", "r");
+    if (!fp) return 1;
+
+    Employee e[100];
+    int count = 0;
+
+    while (fscanf(fp, "%d %s", &e[count].empno, e[count].empname) == 2)
+        count++;
+
+    fclose(fp);
+
+    bubbleSort(e, count);
+
+    for (int i = 0; i < count; i++)
+        printf("%d %s\n", e[i].empno, e[i].empname);
+
+    return 0;
+}

@@ -1,0 +1,102 @@
+//q1
+#include <stdio.h>
+
+int binarySearch(char arr[], int left, int right, char target) {
+    if (left > right)
+        return -1;
+    int mid = left + (right - left) / 2;
+    if (arr[mid] == target)
+        return mid;
+    else if (arr[mid] > target)
+        return binarySearch(arr, left, mid - 1, target);
+    else
+        return binarySearch(arr, mid + 1, right, target);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    char arr[n];
+    for (int i = 0; i < n; i++)
+        scanf(" %c", &arr[i]);
+
+    char target;
+    scanf(" %c", &target);
+
+    int result = binarySearch(arr, 0, n - 1, target);
+    if (result != -1)
+        printf("Character found at index %d\n", result);
+    else
+        printf("Character not found\n");
+
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node *left, *right;
+};
+
+struct Node* createNode(int val) {
+    struct Node* node = (struct Node*)malloc(sizeof(struct Node));
+    node->data = val;
+    node->left = node->right = NULL;
+    return node;
+}
+
+struct Node* insert(struct Node* root, int val) {
+    if (root == NULL) return createNode(val);
+    if (val < root->data)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+    return root;
+}
+
+void inorder(struct Node* root) {
+    if (root == NULL) return;
+    inorder(root->left);
+    printf("%d ", root->data);
+    inorder(root->right);
+}
+
+int countNodes(struct Node* root) {
+    if (root == NULL) return 0;
+    return 1 + countNodes(root->left) + countNodes(root->right);
+}
+
+int countOdd(struct Node* root) {
+    if (root == NULL) return 0;
+    int odd = (root->data % 2 != 0) ? 1 : 0;
+    return odd + countOdd(root->left) + countOdd(root->right);
+}
+
+int main() {
+    struct Node* root = NULL;
+    int choice, val;
+    while(1) {
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1:
+                scanf("%d", &val);
+                root = insert(root, val);
+                break;
+            case 2:
+                inorder(root);
+                printf("\n");
+                break;
+            case 3:
+                printf("%d\n", countNodes(root));
+                break;
+            case 4:
+                printf("%d\n", countOdd(root));
+                break;
+            case 5:
+                return 0;
+        }
+    }
+}

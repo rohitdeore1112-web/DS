@@ -1,0 +1,100 @@
+//slip 9 q2
+
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* head = NULL;
+
+void create(int val) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->data = val;
+    newNode->next = NULL;
+    if (!head)
+        head = newNode;
+    else {
+        Node* temp = head;
+        while (temp->next)
+            temp = temp->next;
+        temp->next = newNode;
+    }
+}
+
+void display() {
+    if (!head) {
+        printf("List is empty\n");
+        return;
+    }
+    Node* temp = head;
+    while (temp) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+}
+
+void search(int val) {
+    Node* temp = head;
+    while (temp) {
+        if (temp->data == val) {
+            printf("Element %d found\n", val);
+            return;
+        }
+        temp = temp->next;
+    }
+    printf("Element %d not found\n", val);
+}
+
+void delete(int val) {
+    Node *temp = head, *prev = NULL;
+    while (temp && temp->data != val) {
+        prev = temp;
+        temp = temp->next;
+    }
+    if (!temp) {
+        printf("Element %d not found\n", val);
+        return;
+    }
+    if (!prev)
+        head = temp->next;
+    else
+        prev->next = temp->next;
+    free(temp);
+    printf("Element %d deleted\n", val);
+}
+
+int main() {
+    int choice, val;
+    while (1) {
+        printf("1.Create 2.Display 3.Search 4.Delete 5.Exit\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter value: ");
+                scanf("%d", &val);
+                create(val);
+                break;
+            case 2:
+                display();
+                break;
+            case 3:
+                printf("Enter element to search: ");
+                scanf("%d", &val);
+                search(val);
+                break;
+            case 4:
+                printf("Enter element to delete: ");
+                scanf("%d", &val);
+                delete(val);
+                break;
+            case 5:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}

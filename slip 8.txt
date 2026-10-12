@@ -1,0 +1,90 @@
+//slip8
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* prev;
+    struct Node* next;
+};
+
+int main() {
+    struct Node *head = NULL, *temp, *newNode;
+    int n, i, value;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &value);
+        newNode->data = value;
+        newNode->prev = NULL;
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            newNode->prev = temp;
+            temp = temp->next;
+        }
+    }
+    printf("Doubly linked list: ");
+    temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node* next;
+} Node;
+
+Node* create(int arr[], int n) {
+    Node *head = NULL, *temp, *newNode;
+    for (int i = 0; i < n; i++) {
+        newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = arr[i];
+        newNode->next = NULL;
+        if (!head)
+            head = newNode;
+        else
+            temp->next = newNode;
+        temp = newNode;
+    }
+    return head;
+}
+
+Node* concatenate(Node* list1, Node* list2) {
+    if (!list1) return list2;
+    Node* temp = list1;
+    while (temp->next) temp = temp->next;
+    temp->next = list2;
+    return list1;
+}
+
+void display(Node* head) {
+    while (head) {
+        printf("%d ", head->data);
+        head = head->next;
+    }
+    printf("\n");
+}
+
+int main() {
+    int a[] = {1, 2, 3};
+    int b[] = {4, 5, 6};
+    Node* list1 = create(a, 3);
+    Node* list2 = create(b, 3);
+    list1 = concatenate(list1, list2);
+    display(list1);
+    return 0;
+}

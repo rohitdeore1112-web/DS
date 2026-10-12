@@ -1,0 +1,114 @@
+//slip7
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+int main() {
+    struct Node *head = NULL, *temp, *newNode;
+    int n, i, value, count = 0;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &value);
+        newNode->data = value;
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = temp->next;
+        }
+    }
+    temp = head;
+    while (temp != NULL) {
+        count++;
+        temp = temp->next;
+    }
+    printf("Length of linked list: %d\n", count);
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *left, *right;
+} Node;
+
+Node* insert(Node* root, int val) {
+    if (!root) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = val;
+        newNode->left = newNode->right = NULL;
+        return newNode;
+    }
+    if (val < root->data)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+    return root;
+}
+
+int search(Node* root, int val) {
+    if (!root) return 0;
+    if (root->data == val) return 1;
+    if (val < root->data)
+        return search(root->left, val);
+    else
+        return search(root->right, val);
+}
+
+void mirror(Node* root) {
+    if (root) {
+        Node* temp = root->left;
+        root->left = root->right;
+        root->right = temp;
+        mirror(root->left);
+        mirror(root->right);
+    }
+}
+
+void inorder(Node* root) {
+    if (root) {
+        inorder(root->left);
+        printf("%d ", root->data);
+        inorder(root->right);
+    }
+}
+
+int main() {
+    Node* root = NULL;
+    int choice, val;
+    while (1) {
+        printf("1.Insert 2.Search 3.Mirror 4.Inorder 5.Exit\n");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                scanf("%d", &val);
+                root = insert(root, val);
+                break;
+            case 2:
+                scanf("%d", &val);
+                printf(search(root, val) ? "Found\n" : "Not Found\n");
+                break;
+            case 3:
+                mirror(root);
+                break;
+            case 4:
+                inorder(root);
+                printf("\n");
+                break;
+            case 5:
+                return 0;
+        }
+    }
+}

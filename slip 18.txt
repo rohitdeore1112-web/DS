@@ -1,0 +1,106 @@
+//q1
+#include <stdio.h>
+#include <string.h>
+
+struct city {
+    int city_code;
+    char name[30];
+};
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    struct city c[n];
+
+    for (int i = 0; i < n; i++) {
+        scanf("%d", &c[i].city_code);
+        scanf(" %[^\n]", c[i].name);
+    }
+
+    char search_name[30];
+    scanf(" %[^\n]", search_name);
+
+    int found = 0;
+    for (int i = 0; i < n; i++) {
+        if (strcmp(c[i].name, search_name) == 0) {
+            printf("City Code: %d\n", c[i].city_code);
+            found = 1;
+            break;
+        }
+    }
+
+    if (!found)
+        printf("City not found\n");
+
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+struct Queue {
+    struct Node *front, *rear;
+    int length;
+};
+
+struct Queue* createQueue() {
+    struct Queue* q = (struct Queue*)malloc(sizeof(struct Queue));
+    q->front = q->rear = NULL;
+    q->length = 0;
+    return q;
+}
+
+void Insert(struct Queue* q, int val) {
+    struct Node* temp = (struct Node*)malloc(sizeof(struct Node));
+    temp->data = val;
+    temp->next = NULL;
+    if (q->rear == NULL) {
+        q->front = q->rear = temp;
+    } else {
+        q->rear->next = temp;
+        q->rear = temp;
+    }
+    q->length++;
+}
+
+int Length(struct Queue* q) {
+    return q->length;
+}
+
+int Search(struct Queue* q, int val) {
+    struct Node* temp = q->front;
+    while (temp != NULL) {
+        if (temp->data == val) return 1;
+        temp = temp->next;
+    }
+    return 0;
+}
+
+int main() {
+    struct Queue* q = createQueue();
+    int choice, val;
+    while (1) {
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                scanf("%d", &val);
+                Insert(q, val);
+                break;
+            case 2:
+                printf("%d\n", Length(q));
+                break;
+            case 3:
+                scanf("%d", &val);
+                printf(Search(q, val) ? "Found\n" : "Not Found\n");
+                break;
+            case 4:
+                return 0;
+        }
+    }
+}

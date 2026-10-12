@@ -1,0 +1,83 @@
+//slip 5
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+    int data;
+    struct Node* next;
+};
+
+int main() {
+    struct Node *head = NULL, *temp, *newNode;
+    int n, i, value;
+    printf("Enter number of nodes: ");
+    scanf("%d", &n);
+    for (i = 0; i < n; i++) {
+        newNode = (struct Node*)malloc(sizeof(struct Node));
+        printf("Enter data for node %d: ", i + 1);
+        scanf("%d", &value);
+        newNode->data = value;
+        newNode->next = NULL;
+        if (head == NULL) {
+            head = newNode;
+            temp = head;
+        } else {
+            temp->next = newNode;
+            temp = temp->next;
+        }
+    }
+    printf("Linked list: ");
+    temp = head;
+    while (temp != NULL) {
+        printf("%d ", temp->data);
+        temp = temp->next;
+    }
+    printf("\n");
+    return 0;
+}
+
+//q2.2
+#include <stdio.h>
+#include <ctype.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int stack[MAX];
+int top = -1;
+
+void push(int val) {
+    stack[++top] = val;
+}
+
+int pop() {
+    return stack[top--];
+}
+
+int evaluate(char* exp) {
+    int i, op1, op2;
+    for (i = 0; exp[i] != '\0'; i++) {
+        if (isdigit(exp[i])) {
+            push(exp[i] - '0');
+        } else {
+            op2 = pop();
+            op1 = pop();
+            switch (exp[i]) {
+                case '+': push(op1 + op2); break;
+                case '-': push(op1 - op2); break;
+                case '*': push(op1 * op2); break;
+                case '/': push(op1 / op2); break;
+            }
+        }
+    }
+    return pop();
+}
+
+int main() {
+    char exp[MAX];
+    scanf("%s", exp);
+    int result = evaluate(exp);
+    printf("%d\n", result);
+    return 0;
+}

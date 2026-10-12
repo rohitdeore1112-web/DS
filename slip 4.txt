@@ -1,0 +1,68 @@
+//slip 4
+
+#include <stdio.h>
+
+int main() {
+    int arr[100], n, i, key, found = 0;
+    printf("Enter number of elements: ");
+    scanf("%d", &n);
+    printf("Enter %d elements:\n", n);
+    for (i = 0; i < n; i++)
+        scanf("%d", &arr[i]);
+    printf("Enter element to search: ");
+    scanf("%d", &key);
+    for (i = 0; i < n; i++) {
+        if (arr[i] == key) {
+            printf("Element found at index %d\n", i);
+            found = 1;
+            break;
+        }
+    }
+    if (!found)
+        printf("Element not found\n");
+    return 0;
+}
+
+//q2.1
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int vertex;
+    struct Node* next;
+} Node;
+
+Node* adjList[100];
+int vertices;
+
+void addEdge(int src, int dest) {
+    Node* newNode = (Node*)malloc(sizeof(Node));
+    newNode->vertex = dest;
+    newNode->next = adjList[src];
+    adjList[src] = newNode;
+}
+
+void display() {
+    for (int i = 0; i < vertices; i++) {
+        Node* temp = adjList[i];
+        printf("Vertex %d:", i);
+        while (temp) {
+            printf(" -> %d", temp->vertex);
+            temp = temp->next;
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int edges, src, dest;
+    scanf("%d%d", &vertices, &edges);
+    for (int i = 0; i < vertices; i++)
+        adjList[i] = NULL;
+    for (int i = 0; i < edges; i++) {
+        scanf("%d%d", &src, &dest);
+        addEdge(src, dest);
+    }
+    display();
+    return 0;
+}

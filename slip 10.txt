@@ -1,0 +1,97 @@
+//q1
+#include <stdio.h>
+
+int main() {
+    int n, i, j;
+    scanf("%d", &n);
+
+    int adj[n][n];
+
+    for (i = 0; i < n; i++)
+        for (j = 0; j < n; j++)
+            scanf("%d", &adj[i][j]);
+
+    for (i = 0; i < n; i++) {
+        int in = 0, out = 0;
+        for (j = 0; j < n; j++) {
+            out += adj[i][j];
+            in += adj[j][i];
+        }
+        printf("Node %d: In-degree = %d, Out-degree = %d\n", i, in, out);
+    }
+
+    return 0;
+}
+
+//q2.2
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct Node {
+    int data;
+    struct Node *left, *right;
+} Node;
+
+typedef struct Queue {
+    Node* arr[100];
+    int front, rear;
+} Queue;
+
+void enqueue(Queue* q, Node* node) {
+    q->arr[++q->rear] = node;
+}
+
+Node* dequeue(Queue* q) {
+    return q->arr[++q->front];
+}
+
+int isEmpty(Queue* q) {
+    return q->front == q->rear;
+}
+
+Node* insert(Node* root, int val) {
+    if (!root) {
+        Node* newNode = (Node*)malloc(sizeof(Node));
+        newNode->data = val;
+        newNode->left = newNode->right = NULL;
+        return newNode;
+    }
+    if (val < root->data)
+        root->left = insert(root->left, val);
+    else
+        root->right = insert(root->right, val);
+    return root;
+}
+
+void levelOrder(Node* root) {
+    if (!root) return;
+    Queue q; q.front = q.rear = -1;
+    enqueue(&q, root);
+    while (!isEmpty(&q)) {
+        Node* temp = dequeue(&q);
+        printf("%d ", temp->data);
+        if (temp->left) enqueue(&q, temp->left);
+        if (temp->right) enqueue(&q, temp->right);
+    }
+    printf("\n");
+}
+
+int main() {
+    Node* root = NULL;
+    int choice, val;
+    while (1) {
+        printf("1.Insert 2.Level Order 3.Exit\n");
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1:
+                scanf("%d", &val);
+                root = insert(root, val);
+                break;
+            case 2:
+                levelOrder(root);
+                break;
+            case 3:
+                return 0;
+        }
+    }
+}
